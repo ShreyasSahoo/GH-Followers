@@ -16,9 +16,49 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard let _ = (scene as? UIWindowScene) else { return }
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+        
+//        let searchNC = UINavigationController(rootViewController: SearchVC())
+//        
+//        let FavourtiesListNC = UINavigationController(rootViewController: FavouritesListVC())
+//        
+//        var tabbar = UITabBarController()
+//        tabbar.viewControllers = [searchNC, FavourtiesListNC]
+//        
+        window = UIWindow(frame: windowScene.coordinateSpace.bounds)
+        window?.windowScene = windowScene
+        window?.rootViewController = createTabbar()
+        window?.makeKeyAndVisible()
+        
+        
+        
     }
 
+    
+    func createTabbar()-> UITabBarController {
+        let tabbar = UITabBarController()
+        tabbar.viewControllers = [createSearchNC(),createFavouritesListNC()]
+        UITabBar.appearance().tintColor = .systemGreen
+        return tabbar
+    }
+    
+    
+    func createSearchNC()->UINavigationController{
+        let searchVC = SearchVC()
+        searchVC.title = "Search"
+        searchVC.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 0)
+        
+        return UINavigationController(rootViewController: searchVC)
+    }
+    
+    
+    func createFavouritesListNC()->UINavigationController{
+        let favourtiesListVC = FavouritesListVC()
+        favourtiesListVC.title = "Favourites List"
+        favourtiesListVC.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 1)
+        
+        return UINavigationController(rootViewController: favourtiesListVC)
+    }
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
         // This occurs shortly after the scene enters the background, or when its session is discarded.
